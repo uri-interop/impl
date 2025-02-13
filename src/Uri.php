@@ -7,7 +7,7 @@ use Stringable;
 use UriInterop\Interface;
 
 /**
- * @phpstan-import-type QueryParamsArray from Interface\Uri
+ * @phpstan-import-type QueryParamsArray from Interface\UriTypeAliases
  */
 abstract class Uri implements Interface\Uri
 {
