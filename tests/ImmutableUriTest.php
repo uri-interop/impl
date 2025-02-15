@@ -24,12 +24,16 @@ class ImmutableUriTest extends \PHPUnit\Framework\TestCase
             ->withPassword('')
             ->withHost('example.net')
             ->withPort(null)
-            ->withPath('/path/to/other')
+            ->withPathSegments(['path', 'to', 'other'])
             ->withQueryParams(['zim' => 'gir', 'irk' => 'doom'])
             ->withFragment('');
 
         $expect = 'http://example.net/path/to/other?zim=gir&irk=doom';
         $this->assertSame($expect, (string) $uri);
+
+        $uri = $uri->withPath('/yet/another/file');
+        $expect = ['yet', 'another', 'file'];
+        $this->assertSame($expect, $uri->pathSegments);
 
         $uri = $uri->withQuery('foo=bar&baz=dib');
         $expect = ['foo' => 'bar', 'baz' => 'dib'];

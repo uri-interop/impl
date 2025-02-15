@@ -22,11 +22,15 @@ class MutableUriTest extends \PHPUnit\Framework\TestCase
         $uri->password = '';
         $uri->host = 'example.net';
         $uri->port = null;
+        $uri->pathSegments[2] = 'file.ext';
         $uri->queryParams = ['zim' => 'gir'];
         $uri->queryParams['irk'] = 'doom';
 
-        $expect = 'http://boshag@example.net/path/to/file?zim=gir&irk=doom#results';
+        $expect = 'http://boshag@example.net/path/to/file.ext?zim=gir&irk=doom#results';
         $this->assertSame($expect, (string) $uri);
+
+        $expect = ['path', 'to', 'file.ext'];
+        $this->assertSame($expect, $uri->pathSegments);
 
         $expect = ['zim' => 'gir', 'irk' => 'doom'];
         $this->assertSame($expect, $uri->queryParams);

@@ -10,6 +10,11 @@ class ImmutableUri extends Uri implements Interface\ImmutableUri
     /**
      * @inheritdoc
      */
+    public protected(set) array $pathSegments;
+
+    /**
+     * @inheritdoc
+     */
     public protected(set) array $queryParams;
 
     public function __construct(
@@ -22,6 +27,7 @@ class ImmutableUri extends Uri implements Interface\ImmutableUri
         public protected(set) string $query = '',
         public protected(set) string $fragment = '',
     ) {
+        $this->pathSegments = $this->parsePath($path);
         $this->queryParams = $this->parseQuery($query);
     }
 
@@ -82,6 +88,7 @@ class ImmutableUri extends Uri implements Interface\ImmutableUri
     {
         $clone = clone $this;
         $clone->path = $path;
+        $clone->pathSegments = $clone->parsePath($path);
         return $clone;
     }
 
@@ -109,11 +116,22 @@ class ImmutableUri extends Uri implements Interface\ImmutableUri
     /**
      * @inheritdoc
      */
+    public function withPathSegments(array $pathSegments) : ImmutableUri
+    {
+        $clone = clone $this;
+        $clone->pathSegments = $pathSegments;
+        $clone->path = $clone->composePath($pathSegments);
+        return $clone;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function withQueryParams(array $queryParams) : ImmutableUri
     {
         $clone = clone $this;
         $clone->queryParams = $queryParams;
-        $clone->query = http_build_query($queryParams);
+        $clone->query = $clone->composeQuery($queryParams);
         return $clone;
     }
 }

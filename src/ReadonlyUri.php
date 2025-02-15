@@ -8,6 +8,11 @@ class ReadonlyUri extends Uri
     /**
      * @inheritdoc
      */
+    public private(set) array $pathSegments;
+
+    /**
+     * @inheritdoc
+     */
     public private(set) array $queryParams;
 
     public function __construct(
@@ -20,6 +25,7 @@ class ReadonlyUri extends Uri
         public private(set) string $query = '',
         public private(set) string $fragment = '',
     ) {
+        $this->pathSegments = $this->parsePath($this->path);
         $this->queryParams = $this->parseQuery($this->query);
     }
 }
