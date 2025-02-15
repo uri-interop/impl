@@ -8,7 +8,6 @@ use UriInterop\Interface;
 
 /**
  * @phpstan-import-type uri_path_segments_array from Interface\UriTypeAliases
- * @phpstan-import-type uri_path_segments_array from Interface\UriTypeAliases
  * @phpstan-import-type uri_percent_composed_string from Interface\UriTypeAliases
  * @phpstan-import-type uri_query_params_array from Interface\UriTypeAliases
  */
@@ -106,6 +105,7 @@ abstract class Uri implements Interface\Uri
         return ($this->scheme ? "{$this->scheme}:" : "")
             . ($this->authority ? "//{$this->authority}" : "")
             . ($this->path ? $this->path : "")
+            . (! $this->path && ($this->query || $this->fragment) ? "/" : "")
             . ($this->query ? "?{$this->query}" : "")
             . ($this->fragment ? "#{$this->fragment}" : "");
     }

@@ -40,5 +40,13 @@ class MutableUriTest extends \PHPUnit\Framework\TestCase
 
         $expect = 'boshag@example.net';
         $this->assertSame($expect, $uri->authority);
+
+        $uri->user = '';
+        $uri->password = '';
+        $uri->path = '/';
+        $uri->query = '';
+        $uri->fragment = '';
+        $expect = 'http://example.net';
+        $this->assertSame($expect, (string) $uri);
     }
 }
