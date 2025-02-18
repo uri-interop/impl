@@ -7,9 +7,9 @@ use Stringable;
 use UriInterop\Interface;
 
 /**
- * @phpstan-import-type uri_path_segments_array from Interface\UriTypeAliases
- * @phpstan-import-type uri_percent_composed_string from Interface\UriTypeAliases
- * @phpstan-import-type uri_query_params_array from Interface\UriTypeAliases
+ * @phpstan-import-type path_segments_array from Interface\UriTypeAliases
+ * @phpstan-import-type percent_composed_string from Interface\UriTypeAliases
+ * @phpstan-import-type query_params_array from Interface\UriTypeAliases
  */
 abstract class Uri implements Interface\Uri
 {
@@ -111,8 +111,8 @@ abstract class Uri implements Interface\Uri
     }
 
     /**
-     * @param uri_path_segments_array $pathSegments
-     * @return uri_percent_composed_string
+     * @param path_segments_array $pathSegments
+     * @return percent_composed_string
      */
     protected function composePath(array $pathSegments) : string
     {
@@ -125,7 +125,7 @@ abstract class Uri implements Interface\Uri
     }
 
     /**
-     * @return uri_path_segments_array
+     * @return path_segments_array
      */
     protected function parsePath(string $path) : array
     {
@@ -142,8 +142,8 @@ abstract class Uri implements Interface\Uri
     }
 
     /**
-     * @param uri_query_params_array $queryParams
-     * @return uri_percent_composed_string
+     * @param query_params_array $queryParams
+     * @return percent_composed_string
      */
     protected function composeQuery(array $queryParams) : string
     {
@@ -158,12 +158,12 @@ abstract class Uri implements Interface\Uri
     }
 
     /**
-     * @return uri_query_params_array
+     * @return query_params_array
      */
     protected function parseQuery(string $query) : array
     {
         parse_str($query, $queryParams);
-        /** @var uri_query_params_array $queryParams */
+        /** @var query_params_array $queryParams */
         return $queryParams;
     }
 }
