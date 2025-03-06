@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace UriInterop\Impl;
 
+use InvalidArgumentException;
 use UriInterop\Interface;
 
 class ImmutableUri extends Uri implements Interface\ImmutableUri
@@ -10,31 +11,33 @@ class ImmutableUri extends Uri implements Interface\ImmutableUri
     /**
      * @inheritdoc
      */
-    public protected(set) array $pathSegments;
+    public protected(set) ?array $pathSegments;
 
     /**
      * @inheritdoc
      */
-    public protected(set) array $queryParams;
+    public protected(set) ?array $queryParams;
 
     public function __construct(
-        public protected(set) string $scheme = '',
-        public protected(set) string $user = '',
-        public protected(set) string $password = '',
-        public protected(set) string $host = '',
+        public protected(set) ?string $scheme = null,
+        public protected(set) ?string $user = null,
+        public protected(set) ?string $password = null,
+        public protected(set) ?string $host = null,
         public protected(set) ?int $port = null,
-        public protected(set) string $path = '',
-        public protected(set) string $query = '',
-        public protected(set) string $fragment = '',
+        public protected(set) ?string $path = null,
+        public protected(set) ?string $query = null,
+        public protected(set) ?string $fragment = null,
     ) {
-        $this->pathSegments = $this->parsePath($path);
-        $this->queryParams = $this->parseQuery($query);
+        $this->pathSegments = $this->parsePath($this->path);
+        $this->path = $this->composePath($this->pathSegments);
+        $this->queryParams = $this->parseQuery($this->query);
+        $this->query = $this->composeQuery($this->queryParams);
     }
 
     /**
      * @inheritdoc
      */
-    public function withScheme(string $scheme) : ImmutableUri
+    public function withScheme(?string $scheme) : ImmutableUri
     {
         $clone = clone $this;
         $clone->scheme = $scheme;
@@ -44,7 +47,7 @@ class ImmutableUri extends Uri implements Interface\ImmutableUri
     /**
      * @inheritdoc
      */
-    public function withUser(string $user) : ImmutableUri
+    public function withUser(?string $user) : ImmutableUri
     {
         $clone = clone $this;
         $clone->user = $user;
@@ -54,7 +57,7 @@ class ImmutableUri extends Uri implements Interface\ImmutableUri
     /**
      * @inheritdoc
      */
-    public function withPassword(string $password) : ImmutableUri
+    public function withPassword(?string $password) : ImmutableUri
     {
         $clone = clone $this;
         $clone->password = $password;
@@ -64,7 +67,7 @@ class ImmutableUri extends Uri implements Interface\ImmutableUri
     /**
      * @inheritdoc
      */
-    public function withHost(string $host) : ImmutableUri
+    public function withHost(?string $host) : ImmutableUri
     {
         $clone = clone $this;
         $clone->host = $host;
@@ -84,7 +87,7 @@ class ImmutableUri extends Uri implements Interface\ImmutableUri
     /**
      * @inheritdoc
      */
-    public function withPath(string $path) : ImmutableUri
+    public function withPath(?string $path) : ImmutableUri
     {
         $clone = clone $this;
         $clone->path = $path;
@@ -95,7 +98,7 @@ class ImmutableUri extends Uri implements Interface\ImmutableUri
     /**
      * @inheritdoc
      */
-    public function withQuery(string $query) : ImmutableUri
+    public function withQuery(?string $query) : ImmutableUri
     {
         $clone = clone $this;
         $clone->query = $query;
@@ -106,7 +109,7 @@ class ImmutableUri extends Uri implements Interface\ImmutableUri
     /**
      * @inheritdoc
      */
-    public function withFragment(string $fragment) : ImmutableUri
+    public function withFragment(?string $fragment) : ImmutableUri
     {
         $clone = clone $this;
         $clone->fragment = $fragment;
@@ -116,8 +119,12 @@ class ImmutableUri extends Uri implements Interface\ImmutableUri
     /**
      * @inheritdoc
      */
-    public function withPathSegments(array $pathSegments) : ImmutableUri
+    public function withPathSegments(?array $pathSegments) : ImmutableUri
     {
+        if (is_array($pathSegments)) {
+            $pathSegments = $this->immutable($pathSegments);
+        }
+
         $clone = clone $this;
         $clone->pathSegments = $pathSegments;
         $clone->path = $clone->composePath($pathSegments);
@@ -127,11 +134,44 @@ class ImmutableUri extends Uri implements Interface\ImmutableUri
     /**
      * @inheritdoc
      */
-    public function withQueryParams(array $queryParams) : ImmutableUri
+    public function withQueryParams(?array $queryParams) : ImmutableUri
     {
+        if (is_array($queryParams)) {
+            $queryParams = $this->immutable($queryParams);
+        }
+
         $clone = clone $this;
         $clone->queryParams = $queryParams;
         $clone->query = $clone->composeQuery($queryParams);
         return $clone;
+    }
+
+    /**
+     * @template T of array
+     * @param T $orig
+     * @return T
+     */
+    public function immutable(array $orig) : mixed
+    {
+        $copy = [];
+
+        foreach ($orig as $key => $value) {
+            if (is_null($value) || is_scalar($value)) {
+                $copy[$key] = $value;
+                continue;
+            }
+
+            if (is_array($value)) {
+                $copy[$key] = $this->immutable($value);
+                continue;
+            }
+
+            throw new InvalidArgumentException(
+                "Immutable values must be null, scalar, or array."
+            );
+        }
+
+        /** @var T */
+        return $copy;
     }
 }

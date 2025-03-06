@@ -16,22 +16,22 @@ abstract class Uri implements Interface\Uri
     /**
      * @inheritdoc
      */
-    abstract public string $scheme { get; }
+    abstract public ?string $scheme { get; }
 
     /**
      * @inheritdoc
      */
-    abstract public string $user { get; }
+    abstract public ?string $user { get; }
 
     /**
      * @inheritdoc
      */
-    abstract public string $password { get; }
+    abstract public ?string $password { get; }
 
     /**
      * @inheritdoc
      */
-    abstract public string $host { get; }
+    abstract public ?string $host { get; }
 
     /**
      * @inheritdoc
@@ -41,44 +41,60 @@ abstract class Uri implements Interface\Uri
     /**
      * @inheritdoc
      */
-    abstract public string $path { get; }
+    abstract public ?string $path { get; }
 
     /**
      * @inheritdoc
      */
-    abstract public string $query { get; }
+    abstract public ?string $query { get; }
 
     /**
      * @inheritdoc
      */
-    abstract public string $fragment { get; }
+    abstract public ?string $fragment { get; }
 
     /**
      * @inheritdoc
      */
-    abstract public array $pathSegments { get; }
+    abstract public ?array $pathSegments { get; }
 
     /**
      * @inheritdoc
      */
-    abstract public array $queryParams { get; }
+    abstract public ?array $queryParams { get; }
 
     /**
      * @inheritdoc
      */
-    public string $userInfo {
+    public ?string $userInfo {
         get {
-            $userInfo = rawurlencode($this->user);
-            $userInfo .= ($this->user && $this->password) ? ':' . rawurlencode($this->password) : '';
-            return $userInfo;
+            if ($this->user === null && $this->password === null) {
+                return null;
+            }
+
+            $userInfo = rawurlencode((string) $this->user);
+
+            $userInfo .= ($this->user && $this->password)
+                ? ':' . rawurlencode((string) $this->password)
+                : '';
+
+                return $userInfo;
         }
     }
 
     /**
      * @inheritdoc
      */
-    public string $authority {
+    public ?string $authority {
         get {
+            if (
+                $this->userInfo === null
+                && $this->host === null
+                && $this->port === null
+            ) {
+                return null;
+            }
+
             $authority = ($this->userInfo) ? $this->userInfo : '';
 
             if ($authority && $this->host) {
@@ -102,22 +118,37 @@ abstract class Uri implements Interface\Uri
      */
     public function __toString() : string
     {
-        return ($this->scheme ? "{$this->scheme}:" : "")
-            . ($this->authority ? "//{$this->authority}" : "")
-            . ($this->path ? $this->path : "")
-            . (! $this->path && ($this->query || $this->fragment) ? "/" : "")
-            . ($this->query ? "?{$this->query}" : "")
-            . ($this->fragment ? "#{$this->fragment}" : "");
+        $uriString = '';
+
+        if ($this->scheme !== null) {
+           $uriString .= "{$this->scheme}:";
+        }
+
+        if ($this->authority !== null) {
+            $uriString .= "//{$this->authority}";
+        }
+
+        $uriString .= $this->path;
+
+        if ($this->query !== null) {
+            $uriString .= "?{$this->query}";
+        }
+
+        if ($this->fragment !== null) {
+            $uriString .= "#{$this->fragment}";
+        }
+
+        return $uriString;
     }
 
     /**
-     * @param path_segments_array $pathSegments
-     * @return percent_composed_string
+     * @param ?path_segments_array $pathSegments
+     * @return ?percent_composed_string
      */
-    protected function composePath(array $pathSegments) : string
+    protected function composePath(?array $pathSegments) : ?string
     {
-        if (! $pathSegments) {
-            return '';
+        if ($pathSegments === null) {
+            return null;
         }
 
         array_walk($pathSegments, fn (string $segment) => rawurlencode($segment));
@@ -125,30 +156,29 @@ abstract class Uri implements Interface\Uri
     }
 
     /**
-     * @return path_segments_array
+     * @return ?path_segments_array
      */
-    protected function parsePath(string $path) : array
+    protected function parsePath(?string $path) : ?array
     {
-        $path = trim($path);
-
-        if (! $path || $path === '/') {
-            return [];
+        if ($path === null) {
+            return null;
         }
 
-        $path = trim($path, '/');
+        $path = trim($path);
+        $path = ltrim($path, '/');
         $pathSegments = explode('/', $path);
         array_walk($pathSegments, fn (string $segment) => urldecode($segment));
         return $pathSegments;
     }
 
     /**
-     * @param query_params_array $queryParams
-     * @return percent_composed_string
+     * @param ?query_params_array $queryParams
+     * @return ?percent_composed_string
      */
-    protected function composeQuery(array $queryParams) : string
+    protected function composeQuery(?array $queryParams) : ?string
     {
-        if (! $queryParams) {
-            return '';
+        if ($queryParams === null) {
+            return null;
         }
 
         return http_build_query(
@@ -158,11 +188,16 @@ abstract class Uri implements Interface\Uri
     }
 
     /**
-     * @return query_params_array
+     * @return ?query_params_array
      */
-    protected function parseQuery(string $query) : array
+    protected function parseQuery(?string $query) : ?array
     {
+        if ($query === null) {
+            return null;
+        }
+
         parse_str($query, $queryParams);
+
         /** @var query_params_array $queryParams */
         return $queryParams;
     }

@@ -3,11 +3,39 @@ declare(strict_types=1);
 
 namespace UriInterop\Impl;
 
-class MutableUriTest extends \PHPUnit\Framework\TestCase
+use UriInterop\Interface\Uri;
+
+class MutableUriTest extends UriTestCase
 {
+    /**
+     * @return MutableUri
+     */
+    public function newUri(
+        ?string $scheme = null,
+        ?string $user = null,
+        ?string $password = null,
+        ?string $host = null,
+        ?int $port = null,
+        ?string $path = null,
+        ?string $query = null,
+        ?string $fragment = null,
+    ) : Uri
+    {
+        return new MutableUri(
+            scheme: $scheme,
+            user: $user,
+            password: $password,
+            host: $host,
+            port: $port,
+            path: $path,
+            query: $query,
+            fragment: $fragment,
+        );
+    }
+
     public function test() : void
     {
-        $uri = new MutableUri(
+        $uri = $this->newUri(
             scheme: 'https',
             user: 'boshag',
             password: 'bopass',
@@ -44,9 +72,9 @@ class MutableUriTest extends \PHPUnit\Framework\TestCase
         $uri->user = '';
         $uri->password = '';
         $uri->path = '/';
-        $uri->query = '';
-        $uri->fragment = '';
-        $expect = 'http://example.net';
+        $uri->query = null;
+        $uri->fragment = null;
+        $expect = 'http://example.net/';
         $this->assertSame($expect, (string) $uri);
     }
 }

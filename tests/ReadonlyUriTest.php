@@ -3,11 +3,39 @@ declare(strict_types=1);
 
 namespace UriInterop\Impl;
 
-class ReadonlyUriTest extends \PHPUnit\Framework\TestCase
+use UriInterop\Interface\Uri;
+
+class ReadonlyUriTest extends UriTestCase
 {
+    /**
+     * @return ReadonlyUri
+     */
+    public function newUri(
+        ?string $scheme = null,
+        ?string $user = null,
+        ?string $password = null,
+        ?string $host = null,
+        ?int $port = null,
+        ?string $path = null,
+        ?string $query = null,
+        ?string $fragment = null,
+    ) : Uri
+    {
+        return new ReadonlyUri(
+            scheme: $scheme,
+            user: $user,
+            password: $password,
+            host: $host,
+            port: $port,
+            path: $path,
+            query: $query,
+            fragment: $fragment,
+        );
+    }
+
     public function test() : void
     {
-        $uri = new ReadonlyUri(
+        $uri = $this->newUri(
             scheme: 'https',
             user: 'boshag',
             password: 'bopass',

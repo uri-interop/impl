@@ -3,11 +3,39 @@ declare(strict_types=1);
 
 namespace UriInterop\Impl;
 
-class ImmutableUriTest extends \PHPUnit\Framework\TestCase
+use UriInterop\Interface\Uri;
+
+class ImmutableUriTest extends UriTestCase
 {
+    /**
+     * @return ImmutableUri
+     */
+    public function newUri(
+        ?string $scheme = null,
+        ?string $user = null,
+        ?string $password = null,
+        ?string $host = null,
+        ?int $port = null,
+        ?string $path = null,
+        ?string $query = null,
+        ?string $fragment = null,
+    ) : Uri
+    {
+        return new ImmutableUri(
+            scheme: $scheme,
+            user: $user,
+            password: $password,
+            host: $host,
+            port: $port,
+            path: $path,
+            query: $query,
+            fragment: $fragment,
+        );
+    }
+
     public function test() : void
     {
-        $uri = new ImmutableUri(
+        $uri = $this->newUri(
             scheme: 'https',
             user: 'boshag',
             password: 'bopass',
@@ -20,13 +48,13 @@ class ImmutableUriTest extends \PHPUnit\Framework\TestCase
 
         $uri = $uri
             ->withScheme('http')
-            ->withUser('')
-            ->withPassword('')
+            ->withUser(null)
+            ->withPassword(null)
             ->withHost('example.net')
             ->withPort(null)
             ->withPathSegments(['path', 'to', 'other'])
             ->withQueryParams(['zim' => 'gir', 'irk' => 'doom'])
-            ->withFragment('');
+            ->withFragment(null);
 
         $expect = 'http://example.net/path/to/other?zim=gir&irk=doom';
         $this->assertSame($expect, (string) $uri);
