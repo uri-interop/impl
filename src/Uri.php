@@ -41,7 +41,7 @@ abstract class Uri implements Interface\Uri
     /**
      * @inheritdoc
      */
-    abstract public ?string $path { get; }
+    abstract public string $path { get; }
 
     /**
      * @inheritdoc
@@ -56,7 +56,7 @@ abstract class Uri implements Interface\Uri
     /**
      * @inheritdoc
      */
-    abstract public ?array $pathSegments { get; }
+    abstract public array $pathSegments { get; }
 
     /**
      * @inheritdoc
@@ -142,13 +142,13 @@ abstract class Uri implements Interface\Uri
     }
 
     /**
-     * @param ?path_segments_array $pathSegments
-     * @return ?percent_composed_string
+     * @param path_segments_array $pathSegments
+     * @return percent_composed_string
      */
-    protected function composePath(?array $pathSegments) : ?string
+    protected function composePath(array $pathSegments) : string
     {
-        if ($pathSegments === null) {
-            return null;
+        if (! $pathSegments) {
+            return '';
         }
 
         array_walk($pathSegments, fn (string $segment) => rawurlencode($segment));
@@ -156,15 +156,16 @@ abstract class Uri implements Interface\Uri
     }
 
     /**
-     * @return ?path_segments_array
+     * @return path_segments_array
      */
-    protected function parsePath(?string $path) : ?array
+    protected function parsePath(string $path) : array
     {
-        if ($path === null) {
-            return null;
+        $path = trim($path);
+
+        if ($path === '') {
+            return [];
         }
 
-        $path = trim($path);
         $path = ltrim($path, '/');
         $pathSegments = explode('/', $path);
         array_walk($pathSegments, fn (string $segment) => urldecode($segment));

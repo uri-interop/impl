@@ -11,7 +11,7 @@ class ImmutableUri extends Uri implements Interface\ImmutableUri
     /**
      * @inheritdoc
      */
-    public protected(set) ?array $pathSegments;
+    public protected(set) array $pathSegments;
 
     /**
      * @inheritdoc
@@ -24,7 +24,7 @@ class ImmutableUri extends Uri implements Interface\ImmutableUri
         public protected(set) ?string $password = null,
         public protected(set) ?string $host = null,
         public protected(set) ?int $port = null,
-        public protected(set) ?string $path = null,
+        public protected(set) string $path = '',
         public protected(set) ?string $query = null,
         public protected(set) ?string $fragment = null,
     ) {
@@ -87,7 +87,7 @@ class ImmutableUri extends Uri implements Interface\ImmutableUri
     /**
      * @inheritdoc
      */
-    public function withPath(?string $path) : ImmutableUri
+    public function withPath(string $path) : ImmutableUri
     {
         $clone = clone $this;
         $clone->path = $path;
@@ -119,12 +119,9 @@ class ImmutableUri extends Uri implements Interface\ImmutableUri
     /**
      * @inheritdoc
      */
-    public function withPathSegments(?array $pathSegments) : ImmutableUri
+    public function withPathSegments(array $pathSegments) : ImmutableUri
     {
-        if (is_array($pathSegments)) {
-            $pathSegments = $this->immutable($pathSegments);
-        }
-
+        $pathSegments = $this->immutable($pathSegments);
         $clone = clone $this;
         $clone->pathSegments = $pathSegments;
         $clone->path = $clone->composePath($pathSegments);

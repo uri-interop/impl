@@ -16,7 +16,7 @@ class MutableUriTest extends UriTestCase
         ?string $password = null,
         ?string $host = null,
         ?int $port = null,
-        ?string $path = null,
+        string $path = '',
         ?string $query = null,
         ?string $fragment = null,
     ) : Uri

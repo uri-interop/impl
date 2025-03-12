@@ -17,7 +17,7 @@ abstract class UriTestCase extends \PHPUnit\Framework\TestCase
         ?string $password = null,
         ?string $host = null,
         ?int $port = null,
-        ?string $path = null,
+        string $path = '',
         ?string $query = null,
         ?string $fragment = null,
     ) : Uri;
@@ -27,6 +27,7 @@ abstract class UriTestCase extends \PHPUnit\Framework\TestCase
     {
         /** @var parse_url_array $parsed */
         $parsed = parse_url($expect);
+        $parsed['path'] ??= '';
 
         if (array_key_exists('pass', $parsed)) {
             $parsed['password'] = $parsed['pass'];

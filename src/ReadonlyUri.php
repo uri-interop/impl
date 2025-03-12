@@ -8,7 +8,7 @@ class ReadonlyUri extends Uri
     /**
      * @inheritdoc
      */
-    public private(set) ?array $pathSegments;
+    public private(set) array $pathSegments;
 
     /**
      * @inheritdoc
@@ -21,7 +21,7 @@ class ReadonlyUri extends Uri
         public private(set) ?string $password = null,
         public private(set) ?string $host = null,
         public private(set) ?int $port = null,
-        public private(set) ?string $path = null,
+        public private(set) string $path = '',
         public private(set) ?string $query = null,
         public private(set) ?string $fragment = null,
     ) {
