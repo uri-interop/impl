@@ -10,19 +10,6 @@ class MutableUri extends Uri implements Interface\MutableUri
     /**
      * @inheritdoc
      */
-    public string $path {
-        get {
-            return $this->composePath($this->pathSegments);
-        }
-
-        set (string $path) {
-            $this->pathSegments = $this->parsePath($path);
-        }
-    }
-
-    /**
-     * @inheritdoc
-     */
     public ?string $query {
         get {
             return $this->composeQuery($this->queryParams);
@@ -36,11 +23,6 @@ class MutableUri extends Uri implements Interface\MutableUri
     /**
      * @inheritdoc
      */
-    public array $pathSegments = [];
-
-    /**
-     * @inheritdoc
-     */
     public ?array $queryParams = [];
 
     public function __construct(
@@ -49,12 +31,10 @@ class MutableUri extends Uri implements Interface\MutableUri
         public ?string $password = null,
         public ?string $host = null,
         public ?int $port = null,
-        string $path = '',
+        public string $path = '',
         ?string $query = null,
         public ?string $fragment = null,
     ) {
-        $this->pathSegments = $this->parsePath($path);
-        $this->path = $this->composePath($this->pathSegments);
         $this->queryParams = $this->parseQuery($query);
         $this->query = $this->composeQuery($this->queryParams);
     }

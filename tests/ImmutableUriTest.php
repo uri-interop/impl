@@ -5,37 +5,19 @@ namespace UriInterop\Impl;
 
 use UriInterop\Interface\Uri;
 
+/**
+ * @property ImmutableUriUtility $uriUtility
+ */
 class ImmutableUriTest extends UriTestCase
 {
-    /**
-     * @return ImmutableUri
-     */
-    public function newUri(
-        ?string $scheme = null,
-        ?string $user = null,
-        ?string $password = null,
-        ?string $host = null,
-        ?int $port = null,
-        string $path = '',
-        ?string $query = null,
-        ?string $fragment = null,
-    ) : Uri
+    protected function setUp() : void
     {
-        return new ImmutableUri(
-            scheme: $scheme,
-            user: $user,
-            password: $password,
-            host: $host,
-            port: $port,
-            path: $path,
-            query: $query,
-            fragment: $fragment,
-        );
+        $this->uriUtility = new ImmutableUriUtility();
     }
 
     public function test() : void
     {
-        $uri = $this->newUri(
+        $uri = $this->uriUtility->newUri(
             scheme: 'https',
             user: 'boshag',
             password: 'bopass',
@@ -52,16 +34,12 @@ class ImmutableUriTest extends UriTestCase
             ->withPassword(null)
             ->withHost('example.net')
             ->withPort(null)
-            ->withPathSegments(['path', 'to', 'other'])
+            ->withPath('/path/to/other')
             ->withQueryParams(['zim' => 'gir', 'irk' => 'doom'])
             ->withFragment(null);
 
         $expect = 'http://example.net/path/to/other?zim=gir&irk=doom';
         $this->assertSame($expect, (string) $uri);
-
-        $uri = $uri->withPath('/yet/another/file');
-        $expect = ['yet', 'another', 'file'];
-        $this->assertSame($expect, $uri->pathSegments);
 
         $uri = $uri->withQuery('foo=bar&baz=dib');
         $expect = ['foo' => 'bar', 'baz' => 'dib'];

@@ -11,31 +11,13 @@ use UriInterop\Interface\Uri;
  */
 abstract class UriTestCase extends \PHPUnit\Framework\TestCase
 {
-    abstract public function newUri(
-        ?string $scheme = null,
-        ?string $user = null,
-        ?string $password = null,
-        ?string $host = null,
-        ?int $port = null,
-        string $path = '',
-        ?string $query = null,
-        ?string $fragment = null,
-    ) : Uri;
+    protected UriUtility $uriUtility;
 
     #[\PHPUnit\Framework\Attributes\DataProvider('provideRecomposition')]
     public function testRecomposition(string $expect) : void
     {
-        /** @var parse_url_array $parsed */
-        $parsed = parse_url($expect);
-        $parsed['path'] ??= '';
-
-        if (array_key_exists('pass', $parsed)) {
-            $parsed['password'] = $parsed['pass'];
-            unset($parsed['pass']);
-        }
-
-        $actual = $this->newUri(...$parsed);
-        $this->assertSame($expect, (string) $actual);
+        $actual = (string) $this->uriUtility->parseUri($expect);
+        $this->assertSame($expect, $actual);
     }
 
     /**
@@ -73,20 +55,25 @@ abstract class UriTestCase extends \PHPUnit\Framework\TestCase
             '#dib',
         ];
 
-        $urls = [];
+        $expects = [];
 
         foreach ($users as $user) {
             foreach ($hosts as $host) {
                 foreach ($paths as $path) {
                     foreach ($queries as $query) {
                         foreach ($fragments as $fragment) {
-                            $urls[] = ["http://{$user}{$host}{$path}{$query}{$fragment}"];
+                            $expects[] = ["http://{$user}{$host}{$path}{$query}{$fragment}"];
                         }
                     }
                 }
             }
         }
 
-        return $urls;
+        $expects[] = ['foo@example.com'];
+        $expects[] = ['mailto:foo@example.com'];
+        $expects[] = ['file://path/fo/file.ext'];
+        $expects[] = ['file:///path/fo/file.ext'];
+
+        return $expects;
     }
 }

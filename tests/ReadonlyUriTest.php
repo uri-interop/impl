@@ -5,37 +5,19 @@ namespace UriInterop\Impl;
 
 use UriInterop\Interface\Uri;
 
+/**
+ * @property ReadonlyUriUtility $uriUtility
+ */
 class ReadonlyUriTest extends UriTestCase
 {
-    /**
-     * @return ReadonlyUri
-     */
-    public function newUri(
-        ?string $scheme = null,
-        ?string $user = null,
-        ?string $password = null,
-        ?string $host = null,
-        ?int $port = null,
-        string $path = '',
-        ?string $query = null,
-        ?string $fragment = null,
-    ) : Uri
+    protected function setUp() : void
     {
-        return new ReadonlyUri(
-            scheme: $scheme,
-            user: $user,
-            password: $password,
-            host: $host,
-            port: $port,
-            path: $path,
-            query: $query,
-            fragment: $fragment,
-        );
+        $this->uriUtility = new ReadonlyUriUtility();
     }
 
     public function test() : void
     {
-        $uri = $this->newUri(
+        $uri = $this->uriUtility->newUri(
             scheme: 'https',
             user: 'boshag',
             password: 'bopass',

@@ -3,11 +3,9 @@ declare(strict_types=1);
 
 namespace UriInterop\Impl;
 
-use Stringable;
 use UriInterop\Interface;
 
 /**
- * @phpstan-import-type path_segments_array from Interface\UriTypeAliases
  * @phpstan-import-type percent_composed_string from Interface\UriTypeAliases
  * @phpstan-import-type query_params_array from Interface\UriTypeAliases
  */
@@ -52,11 +50,6 @@ abstract class Uri implements Interface\Uri
      * @inheritdoc
      */
     abstract public ?string $fragment { get; }
-
-    /**
-     * @inheritdoc
-     */
-    abstract public array $pathSegments { get; }
 
     /**
      * @inheritdoc
@@ -139,37 +132,6 @@ abstract class Uri implements Interface\Uri
         }
 
         return $uriString;
-    }
-
-    /**
-     * @param path_segments_array $pathSegments
-     * @return percent_composed_string
-     */
-    protected function composePath(array $pathSegments) : string
-    {
-        if (! $pathSegments) {
-            return '';
-        }
-
-        array_walk($pathSegments, fn (string $segment) => rawurlencode($segment));
-        return '/' . implode('/', $pathSegments);
-    }
-
-    /**
-     * @return path_segments_array
-     */
-    protected function parsePath(string $path) : array
-    {
-        $path = trim($path);
-
-        if ($path === '') {
-            return [];
-        }
-
-        $path = ltrim($path, '/');
-        $pathSegments = explode('/', $path);
-        array_walk($pathSegments, fn (string $segment) => urldecode($segment));
-        return $pathSegments;
     }
 
     /**

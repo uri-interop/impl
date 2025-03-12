@@ -5,37 +5,19 @@ namespace UriInterop\Impl;
 
 use UriInterop\Interface\Uri;
 
+/**
+ * @property MutableUriUtility $uriUtility
+ */
 class MutableUriTest extends UriTestCase
 {
-    /**
-     * @return MutableUri
-     */
-    public function newUri(
-        ?string $scheme = null,
-        ?string $user = null,
-        ?string $password = null,
-        ?string $host = null,
-        ?int $port = null,
-        string $path = '',
-        ?string $query = null,
-        ?string $fragment = null,
-    ) : Uri
+    protected function setUp() : void
     {
-        return new MutableUri(
-            scheme: $scheme,
-            user: $user,
-            password: $password,
-            host: $host,
-            port: $port,
-            path: $path,
-            query: $query,
-            fragment: $fragment,
-        );
+        $this->uriUtility = new MutableUriUtility();
     }
 
     public function test() : void
     {
-        $uri = $this->newUri(
+        $uri = $this->uriUtility->newUri(
             scheme: 'https',
             user: 'boshag',
             password: 'bopass',
@@ -50,15 +32,15 @@ class MutableUriTest extends UriTestCase
         $uri->password = '';
         $uri->host = 'example.net';
         $uri->port = null;
-        $uri->pathSegments[2] = 'file.ext';
+        $uri->path .= '.ext';
         $uri->queryParams = ['zim' => 'gir'];
         $uri->queryParams['irk'] = 'doom';
 
         $expect = 'http://boshag@example.net/path/to/file.ext?zim=gir&irk=doom#results';
         $this->assertSame($expect, (string) $uri);
 
-        $expect = ['path', 'to', 'file.ext'];
-        $this->assertSame($expect, $uri->pathSegments);
+        $expect = '/path/to/file.ext';
+        $this->assertSame($expect, $uri->path);
 
         $expect = ['zim' => 'gir', 'irk' => 'doom'];
         $this->assertSame($expect, $uri->queryParams);
