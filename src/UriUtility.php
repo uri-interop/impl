@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace UriInterop\Impl;
 
 use Stringable;
-use UriInterop\Interface\UriFactory;
-use UriInterop\Interface\UriParser;
+use UriInterop\Interface\StringableComponents;
+use UriInterop\Interface\UriEncoded;
+use UriInterop\Interface\UriEncodedFactory;
+use UriInterop\Interface\UriEncodedParser;
 use UriInterop\Interface\UriTypeAliases;
 
 /**
@@ -24,7 +26,7 @@ use UriInterop\Interface\UriTypeAliases;
  *     fragment: ?percent_encoded_string,
  * }
  */
-abstract class UriUtility implements UriFactory, UriParser
+abstract class UriUtility implements UriEncodedFactory, UriEncodedParser
 {
     /**
      * @inheritdoc
@@ -38,21 +40,23 @@ abstract class UriUtility implements UriFactory, UriParser
         string $path = '',
         ?string $query = null,
         ?string $fragment = null,
-    ) : Uri;
+    ) : UriEncoded&StringableComponents;
 
     /**
      * @inheritdoc
      */
-    public function parseUri(string|Stringable $uriString) : Uri
+    public function parseUri(
+        string|Stringable $uriString
+    ) : UriEncoded&StringableComponents
     {
-        $components = $this->parseUriComponents($uriString);
+        $components = $this->parseComponents($uriString);
         return $this->newUri(...$components);
     }
 
     /**
      * @return uri_components_array
      */
-    protected function parseUriComponents(string|Stringable $uriString) : array
+    protected function parseComponents(string|Stringable $uriString) : array
     {
         // cf. https://datatracker.ietf.org/doc/html/rfc3986/#appendix-B
         preg_match(
@@ -76,7 +80,7 @@ abstract class UriUtility implements UriFactory, UriParser
         ];
 
         if (! empty($matches[3])) {
-            $this->parseUriAuthorityComponent($matches[4], $components);
+            $this->parseAuthorityComponent($matches[4], $components);
         }
 
         return $components;
@@ -86,7 +90,7 @@ abstract class UriUtility implements UriFactory, UriParser
      * @param uri_components_array $components
      * @param-out uri_components_array $components
      */
-    protected function parseUriAuthorityComponent(?string $authority, array &$components) : void
+    protected function parseAuthorityComponent(?string $authority, array &$components) : void
     {
         if ($authority === null) {
             return;

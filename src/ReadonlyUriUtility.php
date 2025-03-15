@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace UriInterop\Impl;
 
+use UriInterop\Interface\UriEncoded;
+use UriInterop\Interface\StringableComponents;
+
 /**
  * @method ReadonlyUri parseUri(string $uriString)
  */
@@ -21,7 +24,7 @@ class ReadonlyUriUtility extends UriUtility
         string $path = '',
         ?string $query = null,
         ?string $fragment = null,
-    ) : Uri
+    ) : UriEncoded&StringableComponents
     {
         return new ReadonlyUri(
             scheme: $scheme,

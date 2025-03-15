@@ -71,8 +71,14 @@ abstract class UriTestCase extends \PHPUnit\Framework\TestCase
 
         $expects[] = ['foo@example.com'];
         $expects[] = ['mailto:foo@example.com'];
-        $expects[] = ['file://path/fo/file.ext'];
-        $expects[] = ['file:///path/fo/file.ext'];
+        $expects[] = ['file://path/to/file.ext'];
+        $expects[] = ['file:///path/to/file.ext'];
+        $expects[] = ['ftp://ftp.is.co.za/rfc/rfc1808.txt'];
+        $expects[] = ['ldap://[2001:db8::7]/c=GB?objectClass=foo'];
+        $expects[] = ['news:comp.infosystems.www.servers.unix'];
+        $expects[] = ['tel:+1-816-555-1212'];
+        $expects[] = ['telnet://192.0.2.16:80/'];
+        $expects[] = ['urn:oasis:names:specification:docbook:dtd:xml:4.1.2'];
 
         return $expects;
     }

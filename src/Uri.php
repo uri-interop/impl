@@ -3,13 +3,15 @@ declare(strict_types=1);
 
 namespace UriInterop\Impl;
 
-use UriInterop\Interface;
+use UriInterop\Interface\UriEncoded;
+use UriInterop\Interface\StringableComponents;
+use UriInterop\Interface\UriTypeAliases;
 
 /**
- * @phpstan-import-type percent_composed_string from Interface\UriTypeAliases
- * @phpstan-import-type query_params_array from Interface\UriTypeAliases
+ * @phpstan-import-type percent_composed_string from UriTypeAliases
+ * @phpstan-import-type query_params_array from UriTypeAliases
  */
-abstract class Uri implements Interface\Uri
+abstract class Uri implements UriEncoded, StringableComponents
 {
     /**
      * @inheritdoc
@@ -65,10 +67,10 @@ abstract class Uri implements Interface\Uri
                 return null;
             }
 
-            $userInfo = rawurlencode((string) $this->user);
+            $userInfo = (string) $this->user;
 
             $userInfo .= ($this->user && $this->password)
-                ? ':' . rawurlencode((string) $this->password)
+                ? ':' . (string) $this->password
                 : '';
 
                 return $userInfo;
@@ -95,7 +97,7 @@ abstract class Uri implements Interface\Uri
             }
 
             if ($this->host) {
-                $authority .= rawurlencode($this->host);
+                $authority .= $this->host;
 
                 if ($this->port !== null) {
                     $authority .= ":{$this->port}";

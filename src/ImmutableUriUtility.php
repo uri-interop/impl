@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace UriInterop\Impl;
 
+use UriInterop\Interface\StringableComponents;
+use UriInterop\Interface\UriEncoded;
+
 /**
  * @method ImmutableUri parseUri(string $uriString)
  */
@@ -21,7 +24,7 @@ class ImmutableUriUtility extends UriUtility
         string $path = '',
         ?string $query = null,
         ?string $fragment = null,
-    ) : Uri
+    ) : UriEncoded&StringableComponents
     {
         return new ImmutableUri(
             scheme: $scheme,

@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace UriInterop\Impl;
 
 use InvalidArgumentException;
-use UriInterop\Interface;
+use UriInterop\Interface\ImmutableComponents;
 
-class ImmutableUri extends Uri implements Interface\ImmutableUri
+class ImmutableUri extends Uri implements ImmutableComponents
 {
     /**
      * @inheritdoc
