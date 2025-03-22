@@ -19,7 +19,7 @@ class ImmutableUriTest extends UriTestCase
     {
         $uri = $this->uriUtility->newUri(
             scheme: 'https',
-            user: 'boshag',
+            username: 'boshag',
             password: 'bopass',
             host: 'example.net',
             port: 443,
@@ -30,7 +30,7 @@ class ImmutableUriTest extends UriTestCase
 
         $uri = $uri
             ->withScheme('http')
-            ->withUser(null)
+            ->withUsername(null)
             ->withPassword(null)
             ->withHost('example.net')
             ->withPort(null)

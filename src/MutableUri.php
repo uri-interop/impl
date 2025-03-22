@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace UriInterop\Impl;
 
-use UriInterop\Interface\MutableComponents;
+use UriInterop\Interface\MutableUriComponents;
 
-class MutableUri extends Uri implements MutableComponents
+class MutableUri extends Uri implements MutableUriComponents
 {
     /**
      * @inheritdoc
@@ -27,7 +27,7 @@ class MutableUri extends Uri implements MutableComponents
 
     public function __construct(
         public ?string $scheme = null,
-        public ?string $user = null,
+        public ?string $username = null,
         public ?string $password = null,
         public ?string $host = null,
         public ?int $port = null,

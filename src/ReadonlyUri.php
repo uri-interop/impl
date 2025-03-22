@@ -12,7 +12,7 @@ class ReadonlyUri extends Uri
 
     public function __construct(
         public private(set) ?string $scheme = null,
-        public private(set) ?string $user = null,
+        public private(set) ?string $username = null,
         public private(set) ?string $password = null,
         public private(set) ?string $host = null,
         public private(set) ?int $port = null,

@@ -25,7 +25,7 @@ abstract class UriTestCase extends \PHPUnit\Framework\TestCase
      */
     public static function provideRecomposition() : array
     {
-        $users = [
+        $userinfos = [
             '',
             'boshag@',
             'boshag:bopass@',
@@ -57,12 +57,12 @@ abstract class UriTestCase extends \PHPUnit\Framework\TestCase
 
         $expects = [];
 
-        foreach ($users as $user) {
+        foreach ($userinfos as $userinfo) {
             foreach ($hosts as $host) {
                 foreach ($paths as $path) {
                     foreach ($queries as $query) {
                         foreach ($fragments as $fragment) {
-                            $expects[] = ["http://{$user}{$host}{$path}{$query}{$fragment}"];
+                            $expects[] = ["http://{$userinfo}{$host}{$path}{$query}{$fragment}"];
                         }
                     }
                 }

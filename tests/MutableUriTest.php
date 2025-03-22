@@ -19,7 +19,7 @@ class MutableUriTest extends UriTestCase
     {
         $uri = $this->uriUtility->newUri(
             scheme: 'https',
-            user: 'boshag',
+            username: 'boshag',
             password: 'bopass',
             host: 'example.net',
             port: 443,
@@ -29,7 +29,7 @@ class MutableUriTest extends UriTestCase
         );
 
         $uri->scheme = 'http';
-        $uri->password = '';
+        $uri->password = null;
         $uri->host = 'example.net';
         $uri->port = null;
         $uri->path .= '.ext';
@@ -46,13 +46,13 @@ class MutableUriTest extends UriTestCase
         $this->assertSame($expect, $uri->queryParams);
 
         $expect = 'boshag';
-        $this->assertSame($expect, $uri->userInfo);
+        $this->assertSame($expect, $uri->userinfo);
 
         $expect = 'boshag@example.net';
         $this->assertSame($expect, $uri->authority);
 
-        $uri->user = '';
-        $uri->password = '';
+        $uri->username = null;
+        $uri->password = null;
         $uri->path = '/';
         $uri->query = null;
         $uri->fragment = null;

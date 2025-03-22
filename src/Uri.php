@@ -3,15 +3,14 @@ declare(strict_types=1);
 
 namespace UriInterop\Impl;
 
-use UriInterop\Interface\UriEncoded;
-use UriInterop\Interface\StringableComponents;
+use UriInterop\Interface\UriComponents;
 use UriInterop\Interface\UriTypeAliases;
 
 /**
  * @phpstan-import-type percent_composed_string from UriTypeAliases
  * @phpstan-import-type query_params_array from UriTypeAliases
  */
-abstract class Uri implements UriEncoded, StringableComponents
+abstract class Uri implements UriComponents
 {
     /**
      * @inheritdoc
@@ -21,7 +20,7 @@ abstract class Uri implements UriEncoded, StringableComponents
     /**
      * @inheritdoc
      */
-    abstract public ?string $user { get; }
+    abstract public ?string $username { get; }
 
     /**
      * @inheritdoc
@@ -61,19 +60,19 @@ abstract class Uri implements UriEncoded, StringableComponents
     /**
      * @inheritdoc
      */
-    public ?string $userInfo {
+    public ?string $userinfo {
         get {
-            if ($this->user === null && $this->password === null) {
+            if ($this->username === null && $this->password === null) {
                 return null;
             }
 
-            $userInfo = (string) $this->user;
+            $userinfo = (string) $this->username;
 
-            $userInfo .= ($this->user && $this->password)
+            $userinfo .= ($this->username && $this->password)
                 ? ':' . (string) $this->password
                 : '';
 
-                return $userInfo;
+                return $userinfo;
         }
     }
 
@@ -83,14 +82,14 @@ abstract class Uri implements UriEncoded, StringableComponents
     public ?string $authority {
         get {
             if (
-                $this->userInfo === null
+                $this->userinfo === null
                 && $this->host === null
                 && $this->port === null
             ) {
                 return null;
             }
 
-            $authority = ($this->userInfo) ? $this->userInfo : '';
+            $authority = ($this->userinfo) ? $this->userinfo : '';
 
             if ($authority && $this->host) {
                 $authority .= "@";

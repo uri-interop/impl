@@ -19,7 +19,7 @@ class ReadonlyUriTest extends UriTestCase
     {
         $uri = $this->uriUtility->newUri(
             scheme: 'https',
-            user: 'boshag',
+            username: 'boshag',
             password: 'bopass',
             host: 'example.net',
             port: 443,
@@ -35,7 +35,7 @@ class ReadonlyUriTest extends UriTestCase
         $this->assertSame($expect, $uri->queryParams);
 
         $expect = 'boshag:bopass';
-        $this->assertSame($expect, $uri->userInfo);
+        $this->assertSame($expect, $uri->userinfo);
 
         $expect = 'boshag:bopass@example.net:443';
         $this->assertSame($expect, $uri->authority);

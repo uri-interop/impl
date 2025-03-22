@@ -4,10 +4,9 @@ declare(strict_types=1);
 namespace UriInterop\Impl;
 
 use Stringable;
-use UriInterop\Interface\StringableComponents;
-use UriInterop\Interface\UriEncoded;
-use UriInterop\Interface\UriEncodedFactory;
-use UriInterop\Interface\UriEncodedParser;
+use UriInterop\Interface\UriComponents;
+use UriInterop\Interface\UriComponentsFactory;
+use UriInterop\Interface\UriStringParser;
 use UriInterop\Interface\UriTypeAliases;
 
 /**
@@ -17,7 +16,7 @@ use UriInterop\Interface\UriTypeAliases;
  *
  * @phpstan-type uri_components_array array{
  *     scheme: ?string,
- *     user: ?percent_encoded_string,
+ *     username: ?percent_encoded_string,
  *     password: ?percent_encoded_string,
  *     host: ?percent_encoded_string,
  *     port: ?int,
@@ -26,28 +25,26 @@ use UriInterop\Interface\UriTypeAliases;
  *     fragment: ?percent_encoded_string,
  * }
  */
-abstract class UriUtility implements UriEncodedFactory, UriEncodedParser
+abstract class UriUtility implements UriComponentsFactory, UriStringParser
 {
     /**
      * @inheritdoc
      */
     abstract public function newUri(
         ?string $scheme = null,
-        ?string $user = null,
+        ?string $username = null,
         ?string $password = null,
         ?string $host = null,
         ?int $port = null,
         string $path = '',
         ?string $query = null,
         ?string $fragment = null,
-    ) : UriEncoded&StringableComponents;
+    ) : UriComponents;
 
     /**
      * @inheritdoc
      */
-    public function parseUri(
-        string|Stringable $uriString
-    ) : UriEncoded&StringableComponents
+    public function parseUri(string|Stringable $uriString) : UriComponents
     {
         $components = $this->parseComponents($uriString);
         return $this->newUri(...$components);
@@ -70,7 +67,7 @@ abstract class UriUtility implements UriEncodedFactory, UriEncodedParser
         /** @var uri_components_array $components */
         $components = [
             'scheme' => ! empty($matches[1]) ? $matches[2] : null,
-            'user' => null,
+            'username' => null,
             'password' => null,
             'host' => null,
             'port' => null,
@@ -107,7 +104,7 @@ abstract class UriUtility implements UriEncodedFactory, UriEncodedParser
 
         if ($matches[1]) {
             $userinfo = explode(':', $matches[2]);
-            $components['user'] = $userinfo[0];
+            $components['username'] = $userinfo[0];
             $components['password'] = $userinfo[1] ?? null;
         }
 

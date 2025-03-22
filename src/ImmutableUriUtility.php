@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 namespace UriInterop\Impl;
 
-use UriInterop\Interface\StringableComponents;
-use UriInterop\Interface\UriEncoded;
+use UriInterop\Interface\UriComponents;
 
 /**
  * @method ImmutableUri parseUri(string $uriString)
@@ -17,18 +16,18 @@ class ImmutableUriUtility extends UriUtility
      */
     public function newUri(
         ?string $scheme = null,
-        ?string $user = null,
+        ?string $username = null,
         ?string $password = null,
         ?string $host = null,
         ?int $port = null,
         string $path = '',
         ?string $query = null,
         ?string $fragment = null,
-    ) : UriEncoded&StringableComponents
+    ) : UriComponents
     {
         return new ImmutableUri(
             scheme: $scheme,
-            user: $user,
+            username: $username,
             password: $password,
             host: $host,
             port: $port,

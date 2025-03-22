@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace UriInterop\Impl;
 
 use InvalidArgumentException;
-use UriInterop\Interface\ImmutableComponents;
+use UriInterop\Interface\ImmutableUriComponents;
 
-class ImmutableUri extends Uri implements ImmutableComponents
+class ImmutableUri extends Uri implements ImmutableUriComponents
 {
     /**
      * @inheritdoc
@@ -15,7 +15,7 @@ class ImmutableUri extends Uri implements ImmutableComponents
 
     public function __construct(
         public protected(set) ?string $scheme = null,
-        public protected(set) ?string $user = null,
+        public protected(set) ?string $username = null,
         public protected(set) ?string $password = null,
         public protected(set) ?string $host = null,
         public protected(set) ?int $port = null,
@@ -40,10 +40,10 @@ class ImmutableUri extends Uri implements ImmutableComponents
     /**
      * @inheritdoc
      */
-    public function withUser(?string $user) : ImmutableUri
+    public function withUsername(?string $username) : ImmutableUri
     {
         $clone = clone $this;
-        $clone->user = $user;
+        $clone->username = $username;
         return $clone;
     }
 
