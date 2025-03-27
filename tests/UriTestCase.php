@@ -20,6 +20,20 @@ abstract class UriTestCase extends \PHPUnit\Framework\TestCase
         $this->assertSame($expect, $actual);
     }
 
+    public function testNoAuthority() : void
+    {
+        $expect = '/path/to/file.txt';
+        $actual = (string) $this->uriUtility->parseUri($expect);
+        $this->assertSame($expect, $actual);
+    }
+
+    public function testNoCredentials() : void
+    {
+        $expect = 'http://example.com/path/to/file.txt';
+        $actual = (string) $this->uriUtility->parseUri($expect);
+        $this->assertSame($expect, $actual);
+    }
+
     /**
      * @return array<int, array{string}>
      */

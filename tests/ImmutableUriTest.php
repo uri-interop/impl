@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 namespace UriInterop\Impl;
 
-use UriInterop\Interface\Uri;
+use UriInterop\Interface\UriTypeAliases;
+use InvalidArgumentException;
 
 /**
+ * @phpstan-import-type query_params_array from UriTypeAliases
+ *
  * @property ImmutableUriUtility $uriUtility
  */
 class ImmutableUriTest extends UriTestCase
@@ -35,14 +38,24 @@ class ImmutableUriTest extends UriTestCase
             ->withHost('example.net')
             ->withPort(null)
             ->withPath('/path/to/other')
-            ->withQueryParams(['zim' => 'gir', 'irk' => 'doom'])
+            ->withQueryParams(['zim' => 'gir', 'irk' => ['gaz' => 'doom']])
             ->withFragment(null);
 
-        $expect = 'http://example.net/path/to/other?zim=gir&irk=doom';
+        $expect = 'http://example.net/path/to/other?zim=gir&irk%5Bgaz%5D=doom';
         $this->assertSame($expect, (string) $uri);
 
         $uri = $uri->withQuery('foo=bar&baz=dib');
         $expect = ['foo' => 'bar', 'baz' => 'dib'];
         $this->assertSame($expect, $uri->queryParams);
+    }
+
+    public function testMutableNotAllowed() : void
+    {
+        $uri = $this->uriUtility->newUri();
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Immutable values must be null, scalar, or array.');
+
+        /** @phpstan-ignore argument.type */
+        $uri->withQueryParams([(object) []]);
     }
 }

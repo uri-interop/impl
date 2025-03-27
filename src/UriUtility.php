@@ -76,34 +76,22 @@ abstract class UriUtility implements UriComponentsFactory, UriStringParser
             'fragment' => ! empty($matches[8]) ? $matches[9] : null,
         ];
 
-        if (! empty($matches[3])) {
-            $this->parseAuthorityComponent($matches[4], $components);
+        if (empty($matches[3])) {
+            return $components;
         }
 
-        return $components;
-    }
-
-    /**
-     * @param uri_components_array $components
-     * @param-out uri_components_array $components
-     */
-    protected function parseAuthorityComponent(?string $authority, array &$components) : void
-    {
-        if ($authority === null) {
-            return;
-        }
+        $authority = (string) $matches[4];
 
         if ($authority === '') {
             $components['host'] = $authority;
-            return;
+            return $components;
         }
 
-        if (! preg_match('(^(([^@]*)@)?(.+?)(:(\d*))?$)', $authority, $matches)) {
-            return;
-        }
+        preg_match('(^(([^@]*)@)?(.+?)(:(\d*))?$)', $authority, $matches);
+        $matches += array_fill(1, 5, null);
 
         if ($matches[1]) {
-            $userinfo = explode(':', $matches[2]);
+            $userinfo = explode(':', (string) $matches[2]);
             $components['username'] = $userinfo[0];
             $components['password'] = $userinfo[1] ?? null;
         }
@@ -114,5 +102,7 @@ abstract class UriUtility implements UriComponentsFactory, UriStringParser
         if ($port !== null) {
             $components['port'] = (int) $port;
         }
+
+        return $components;
     }
 }
