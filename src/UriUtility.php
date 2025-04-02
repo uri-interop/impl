@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace UriInterop\Impl;
 
 use Stringable;
-use UriInterop\Interface\UriComponents;
-use UriInterop\Interface\UriComponentsFactory;
+use UriInterop\Interface\UriRecord;
+use UriInterop\Interface\UriRecordFactory;
 use UriInterop\Interface\UriStringParser;
 use UriInterop\Interface\UriTypeAliases;
 
@@ -25,7 +25,7 @@ use UriInterop\Interface\UriTypeAliases;
  *     fragment: ?percent_encoded_string,
  * }
  */
-abstract class UriUtility implements UriComponentsFactory, UriStringParser
+abstract class UriUtility implements UriRecordFactory, UriStringParser
 {
     /**
      * @inheritdoc
@@ -39,12 +39,12 @@ abstract class UriUtility implements UriComponentsFactory, UriStringParser
         string $path = '',
         ?string $query = null,
         ?string $fragment = null,
-    ) : UriComponents;
+    ) : UriRecord;
 
     /**
      * @inheritdoc
      */
-    public function parseUri(string|Stringable $uriString) : UriComponents
+    public function parseUri(string|Stringable $uriString) : UriRecord
     {
         $components = $this->parseComponents($uriString);
         return $this->newUri(...$components);

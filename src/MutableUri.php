@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace UriInterop\Impl;
 
-use UriInterop\Interface\MutableUriComponents;
+use UriInterop\Interface\MutableUriRecord;
 
-class MutableUri extends Uri implements MutableUriComponents
+class MutableUri extends Uri implements MutableUriRecord
 {
     /**
      * @inheritdoc

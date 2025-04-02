@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace UriInterop\Impl;
 
-use UriInterop\Interface\UriComponents;
+use UriInterop\Interface\UriRecord;
 
 /**
  * @method ImmutableUri parseUri(string $uriString)
@@ -23,7 +23,7 @@ class ImmutableUriUtility extends UriUtility
         string $path = '',
         ?string $query = null,
         ?string $fragment = null,
-    ) : UriComponents
+    ) : UriRecord
     {
         return new ImmutableUri(
             scheme: $scheme,
