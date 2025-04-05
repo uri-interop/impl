@@ -35,7 +35,6 @@ class MutableUri extends Uri implements MutableUriRecord
         ?string $query = null,
         public ?string $fragment = null,
     ) {
-        $this->queryParams = $this->parseQuery($query);
-        $this->query = $this->composeQuery($this->queryParams);
+        $this->query = $query;
     }
 }

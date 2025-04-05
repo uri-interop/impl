@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace UriInterop\Impl;
 
-use UriInterop\Interface\Uri;
-
 /**
  * @property MutableUriUtility $uriUtility
  */

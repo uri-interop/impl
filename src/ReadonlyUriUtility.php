@@ -7,6 +7,8 @@ use UriInterop\Interface\UriRecord;
 
 /**
  * @method ReadonlyUri parseUri(string $uriString)
+ * @method ReadonlyUri normalizeUri(string $uriString)
+ * @method ReadonlyUri resolveUri(UriRecord $relative, UriRecord $base)
  */
 class ReadonlyUriUtility extends UriUtility
 {
