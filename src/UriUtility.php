@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace UriInterop\Impl;
 
-use InvalidArgumentException;
 use Stringable;
 use UriInterop\Interface\UriRecord;
 use UriInterop\Interface\UriRecordFactory;
@@ -204,7 +203,7 @@ abstract class UriUtility implements UriRecordFactory, UriRecordNormalizer, UriR
         // present in a base URI; the other components may be empty or
         // undefined.
         if (trim((string) $base->scheme) === '') {
-            throw new InvalidArgumentException('Expected scheme in base UriRecord, actually missing.');
+            throw new UriException('Expected scheme in base UriRecord, actually missing.');
         }
 
         $target = new UriComponents();

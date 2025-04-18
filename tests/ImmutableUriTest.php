@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace UriInterop\Impl;
 
+use UriInterop\Interface\UriThrowable;
 use UriInterop\Interface\UriTypeAliases;
-use InvalidArgumentException;
 
 /**
  * @phpstan-import-type query_params_array from UriTypeAliases
@@ -52,7 +52,7 @@ class ImmutableUriTest extends UriTestCase
     public function testMutableNotAllowed() : void
     {
         $uri = $this->uriUtility->newUri();
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(UriThrowable::class);
         $this->expectExceptionMessage('Immutable values must be null, scalar, or array.');
 
         /** @phpstan-ignore argument.type */

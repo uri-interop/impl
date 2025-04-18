@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace UriInterop\Impl;
 
-use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\DataProvider;
+use UriInterop\Interface\UriThrowable;
 
 abstract class UriTestCase extends \PHPUnit\Framework\TestCase
 {
@@ -45,7 +45,7 @@ abstract class UriTestCase extends \PHPUnit\Framework\TestCase
     {
         $base = $this->uriUtility->parseUri('//example.com');
         $relative = $this->uriUtility->parseUri('foo/bar');
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(UriThrowable::class);
         $this->expectExceptionMessage('Expected scheme in base UriRecord, actually missing.');
         $this->uriUtility->resolveUri($relative, $base);
     }

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace UriInterop\Impl;
 
-use InvalidArgumentException;
 use UriInterop\Interface\ImmutableUriRecord;
 
 class ImmutableUri extends Uri implements ImmutableUriRecord
@@ -143,7 +142,7 @@ class ImmutableUri extends Uri implements ImmutableUriRecord
                 continue;
             }
 
-            throw new InvalidArgumentException(
+            throw new UriException(
                 "Immutable values must be null, scalar, or array."
             );
         }
