@@ -46,7 +46,7 @@ abstract class UriTestCase extends \PHPUnit\Framework\TestCase
         $base = $this->uriUtility->parseUri('//example.com');
         $relative = $this->uriUtility->parseUri('foo/bar');
         $this->expectException(UriThrowable::class);
-        $this->expectExceptionMessage('Expected scheme in base UriRecord, actually missing.');
+        $this->expectExceptionMessage('Expected scheme in base UriStruct, actually missing.');
         $this->uriUtility->resolveUri($relative, $base);
     }
 

@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace UriInterop\Impl;
 
-use UriInterop\Interface\UriRecord;
+use UriInterop\Interface\UriStruct;
 use UriInterop\Interface\UriTypeAliases;
 
 /**
  * @phpstan-import-type percent_composed_string from UriTypeAliases
  * @phpstan-import-type query_params_array from UriTypeAliases
  */
-abstract class Uri implements UriRecord
+abstract class Uri implements UriStruct
 {
     /**
      * @inheritdoc

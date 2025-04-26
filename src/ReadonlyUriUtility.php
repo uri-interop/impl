@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace UriInterop\Impl;
 
-use UriInterop\Interface\UriRecord;
+use UriInterop\Interface\UriStruct;
 
 /**
  * @method ReadonlyUri parseUri(string $uriString)
  * @method ReadonlyUri normalizeUri(string $uriString)
- * @method ReadonlyUri resolveUri(UriRecord $relative, UriRecord $base)
+ * @method ReadonlyUri resolveUri(UriStruct $relative, UriStruct $base)
  */
 class ReadonlyUriUtility extends UriUtility
 {
@@ -25,7 +25,7 @@ class ReadonlyUriUtility extends UriUtility
         string $path = '',
         ?string $query = null,
         ?string $fragment = null,
-    ) : UriRecord
+    ) : UriStruct
     {
         return new ReadonlyUri(
             scheme: $scheme,

@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace UriInterop\Impl;
 
-use UriInterop\Interface\UriRecord;
+use UriInterop\Interface\UriStruct;
 
 /**
  * @method ImmutableUri parseUri(string $uriString)
  * @method ImmutableUri normalizeUri(string $uriString)
- * @method ImmutableUri resolveUri(UriRecord $relative, UriRecord $base)
+ * @method ImmutableUri resolveUri(UriStruct $relative, UriStruct $base)
  */
 class ImmutableUriUtility extends UriUtility
 {
@@ -25,7 +25,7 @@ class ImmutableUriUtility extends UriUtility
         string $path = '',
         ?string $query = null,
         ?string $fragment = null,
-    ) : UriRecord
+    ) : UriStruct
     {
         return new ImmutableUri(
             scheme: $scheme,

@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace UriInterop\Impl;
 
-use UriInterop\Interface\ImmutableUriRecord;
+use UriInterop\Interface\ImmutableUriStruct;
 
-class ImmutableUri extends Uri implements ImmutableUriRecord
+class ImmutableUri extends Uri implements ImmutableUriStruct
 {
     /**
      * @inheritdoc

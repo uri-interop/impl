@@ -4,13 +4,13 @@ declare(strict_types=1);
 namespace UriInterop\Impl;
 
 use Stringable;
-use UriInterop\Interface\UriRecord;
-use UriInterop\Interface\UriRecordFactory;
-use UriInterop\Interface\UriRecordNormalizer;
-use UriInterop\Interface\UriRecordResolver;
+use UriInterop\Interface\UriStruct;
+use UriInterop\Interface\UriStructFactory;
+use UriInterop\Interface\UriStructNormalizer;
+use UriInterop\Interface\UriStructResolver;
 use UriInterop\Interface\UriStringParser;
 
-abstract class UriUtility implements UriRecordFactory, UriRecordNormalizer, UriRecordResolver, UriStringParser
+abstract class UriUtility implements UriStructFactory, UriStructNormalizer, UriStructResolver, UriStringParser
 {
     protected const array DECODE_UNRESERVED_CHARS = [
         '%2D' => '-',
@@ -93,12 +93,12 @@ abstract class UriUtility implements UriRecordFactory, UriRecordNormalizer, UriR
         string $path = '',
         ?string $query = null,
         ?string $fragment = null,
-    ) : UriRecord;
+    ) : UriStruct;
 
     /**
      * @inheritdoc
      */
-    public function parseUri(string|Stringable $uriString) : UriRecord
+    public function parseUri(string|Stringable $uriString) : UriStruct
     {
         $components = $this->parseComponents($uriString);
         return $this->newUri(...$components->asArray());
@@ -107,7 +107,7 @@ abstract class UriUtility implements UriRecordFactory, UriRecordNormalizer, UriR
     /**
      * @inheritdoc
      */
-    public function normalizeUri(UriRecord $uri) : UriRecord
+    public function normalizeUri(UriStruct $uri) : UriStruct
     {
         $components = $this->normalizeComponents($uri);
         return $this->newUri(...$components->asArray());
@@ -117,9 +117,9 @@ abstract class UriUtility implements UriRecordFactory, UriRecordNormalizer, UriR
      * @inheritdoc
      */
     public function resolveUri(
-        UriRecord $relative,
-        UriRecord $base
-    ) : UriRecord
+        UriStruct $relative,
+        UriStruct $base
+    ) : UriStruct
     {
         $components = $this->resolveComponents($relative, $base);
         return $this->newUri(...$components->asArray());
@@ -194,8 +194,8 @@ abstract class UriUtility implements UriRecordFactory, UriRecordNormalizer, UriR
      * <https://datatracker.ietf.org/doc/html/rfc3986/#section-5.2>.
      */
     protected function resolveComponents(
-        UriRecord $relative,
-        UriRecord $base
+        UriStruct $relative,
+        UriStruct $base
     ) : UriComponents
     {
         // <https://datatracker.ietf.org/doc/html/rfc3986/#section-5.2.1>:
@@ -203,7 +203,7 @@ abstract class UriUtility implements UriRecordFactory, UriRecordNormalizer, UriR
         // present in a base URI; the other components may be empty or
         // undefined.
         if (trim((string) $base->scheme) === '') {
-            throw new UriException('Expected scheme in base UriRecord, actually missing.');
+            throw new UriException('Expected scheme in base UriStruct, actually missing.');
         }
 
         $target = new UriComponents();
@@ -260,7 +260,7 @@ abstract class UriUtility implements UriRecordFactory, UriRecordNormalizer, UriR
      * The algorithm herein is taken directly from
      * <https://datatracker.ietf.org/doc/html/rfc3986/#section-5.2.3>.
      */
-    protected function mergePaths(UriRecord $relative, UriRecord $base) : string
+    protected function mergePaths(UriStruct $relative, UriStruct $base) : string
     {
         // If the base URI has a defined authority component and an empty
         // path, then return a string consisting of "/" concatenated with the
@@ -374,7 +374,7 @@ abstract class UriUtility implements UriRecordFactory, UriRecordNormalizer, UriR
     /**
      * https://datatracker.ietf.org/doc/html/rfc3986/#section-6.2.2
      */
-    protected function normalizeComponents(UriRecord $uri) : UriComponents
+    protected function normalizeComponents(UriStruct $uri) : UriComponents
     {
         $components = new UriComponents(
             scheme: $uri->scheme,
