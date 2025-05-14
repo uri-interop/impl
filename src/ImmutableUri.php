@@ -127,7 +127,7 @@ class ImmutableUri extends Uri implements ImmutableUriStruct
      * @param T $orig
      * @return T
      */
-    public function immutable(array $orig) : mixed
+    protected function immutable(array $orig) : mixed
     {
         $copy = [];
 

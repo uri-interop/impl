@@ -67,12 +67,8 @@ abstract class Uri implements UriStruct
             }
 
             $userinfo = (string) $this->username;
-
-            $userinfo .= ($this->username && $this->password)
-                ? ':' . (string) $this->password
-                : '';
-
-                return $userinfo;
+            $userinfo .= $this->password ? ':' . (string) $this->password : '';
+            return $userinfo;
         }
     }
 

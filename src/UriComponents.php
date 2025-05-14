@@ -8,8 +8,9 @@ use UriInterop\Interface\UriStruct;
 use UriInterop\Interface\UriTypeAliases;
 
 /**
+ * @phpstan-import-type composed_string from UriTypeAliases
+ * @phpstan-import-type percent_composed_string from UriTypeAliases
  * @phpstan-import-type percent_encoded_string from UriTypeAliases
- * @phpstan-import-type encoded_string from UriTypeAliases
  */
 class UriComponents
 {
@@ -83,12 +84,12 @@ class UriComponents
     ];
 
     /**
-     * @param ?percent_encoded_string $username:
-     * @param ?percent_encoded_string $password:
-     * @param ?percent_encoded_string $host
-     * @param percent_encoded_string $path
-     * @param ?encoded_string $query
-     * @param ?percent_encoded_string $fragment
+     * @param ?percent_encoded_string $username
+     * @param ?percent_encoded_string $password
+     * @param ?percent_composed_string $host
+     * @param percent_composed_string $path
+     * @param ?composed_string $query
+     * @param ?percent_composed_string $fragment
      */
     public function __construct(
         public ?string $scheme = null,
@@ -107,11 +108,11 @@ class UriComponents
      *     scheme: ?string,
      *     username: ?percent_encoded_string,
      *     password: ?percent_encoded_string,
-     *     host: ?percent_encoded_string,
+     *     host: ?percent_composed_string,
      *     port: ?int,
-     *     path: percent_encoded_string,
-     *     query: ?encoded_string,
-     *     fragment: ?percent_encoded_string,
+     *     path: percent_composed_string,
+     *     query: ?composed_string,
+     *     fragment: ?percent_composed_string,
      * }
      */
     public function asArray()
