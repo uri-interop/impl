@@ -37,7 +37,7 @@ abstract class UriTestCase extends \PHPUnit\Framework\TestCase
         $base = $this->uriUtility->parseUri('http://a/b/c/d;p?q');
         $relative = $this->uriUtility->parseUri($relative);
         $expect = $this->uriUtility->parseUri($expect);
-        $actual = $this->uriUtility->resolveUri($relative, $base);
+        $actual = $this->uriUtility->resolveUri($base, $relative);
         $this->assertSame((string) $expect, (string) $actual);
     }
 
@@ -47,7 +47,7 @@ abstract class UriTestCase extends \PHPUnit\Framework\TestCase
         $relative = $this->uriUtility->parseUri('foo/bar');
         $this->expectException(UriThrowable::class);
         $this->expectExceptionMessage('Expected scheme in base UriStruct, actually missing.');
-        $this->uriUtility->resolveUri($relative, $base);
+        $this->uriUtility->resolveUri($base, $relative);
     }
 
     public function testResolveUriWithAuthorityButNoBasePath() : void
@@ -55,7 +55,7 @@ abstract class UriTestCase extends \PHPUnit\Framework\TestCase
         $base = $this->uriUtility->parseUri('http://example.com');
         $relative = $this->uriUtility->parseUri('foo/bar');
         $expect = $this->uriUtility->parseUri('http://example.com/foo/bar');
-        $actual = $this->uriUtility->resolveUri($relative, $base);
+        $actual = $this->uriUtility->resolveUri($base, $relative);
         $this->assertSame((string) $expect, (string) $actual);
     }
 
@@ -64,7 +64,7 @@ abstract class UriTestCase extends \PHPUnit\Framework\TestCase
         $base = $this->uriUtility->parseUri('http:foo');
         $relative = $this->uriUtility->parseUri('bar/baz');
         $expect = $this->uriUtility->parseUri('http:bar/baz');
-        $actual = $this->uriUtility->resolveUri($relative, $base);
+        $actual = $this->uriUtility->resolveUri($base, $relative);
         $this->assertSame((string) $expect, (string) $actual);
     }
 

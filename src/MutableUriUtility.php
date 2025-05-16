@@ -8,7 +8,7 @@ use UriInterop\Interface\UriStruct;
 /**
  * @method MutableUri parseUri(string $uriString)
  * @method MutableUri normalizeUri(string $uriString)
- * @method MutableUri resolveUri(UriStruct $relative, UriStruct $base)
+ * @method MutableUri resolveUri(UriStruct $base, UriStruct $relative)
  */
 class MutableUriUtility extends UriUtility
 {

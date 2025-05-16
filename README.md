@@ -28,7 +28,7 @@ $relative = $utility->newUri(
     path: '/baz/dib',
 );
 
-$resolved = $utilty->resolveUri($relative, $base);
+$resolved = $utility->resolveUri($base, $relative);
 
 $normalized = $utility->normalizeUri($resolved);
 ```
@@ -49,7 +49,7 @@ $relative = $utility->newUri(
     path: '/baz/dib',
 );
 
-$resolved = $utilty->resolveUri($relative, $base);
+$resolved = $utility->resolveUri($base, $relative);
 
 $normalized = $utility->normalizeUri($resolved);
 ```
@@ -69,7 +69,7 @@ $relative = $utility->newUri(
     path: '/baz/dib',
 );
 
-$resolved = $utilty->resolveUri($relative, $base);
+$resolved = $utility->resolveUri($base, $relative);
 
 $normalized = $utility->normalizeUri($resolved);
 ```
@@ -100,8 +100,8 @@ assert($relativeImmutableUri instanceof ImmutableUri);
 
 /** @var MutableUriUtility $mutableUtility */
 $resolvedMutableUri = $mutableUtility->resolveUri(
-    $relativeReadonlyUri,
     $baseReadonlyUri,
+    $relativeReadonlyUri,
 );
 
 assert($resolvedMutableUri instanceof MutableUri);
@@ -117,7 +117,7 @@ assert($normalizedReadonlyUri instanceof ReadonlyUri);
 
 ### _UriComponents_
 
-The _UriComponents_ class is composed of static methods with all of the core logic for parsing, normalizing, and resolving. You can call these static methods from your own implementations.
+The _UriComponents_ class contains static methods with all of the core logic for parsing, normalizing, and resolving. You can call these static methods from your own implementations.
 
 * * *
 

@@ -122,7 +122,7 @@ class UriComponents
 
     /**
      * The algorithm herein is taken directly from
-     * cf. <https://datatracker.ietf.org/doc/html/rfc3986/#appendix-B>.
+     * <https://datatracker.ietf.org/doc/html/rfc3986/#appendix-B>.
      */
     public static function newFromParsed(string|Stringable $uriString) : UriComponents
     {
@@ -189,8 +189,8 @@ class UriComponents
      * <https://datatracker.ietf.org/doc/html/rfc3986/#section-5.2>.
      */
     public static function newFromResolved(
+        UriStruct $base,
         UriStruct $relative,
-        UriStruct $base
     ) : UriComponents
     {
         // <https://datatracker.ietf.org/doc/html/rfc3986/#section-5.2.1>:
@@ -231,7 +231,7 @@ class UriComponents
                     if (str_starts_with($relative->path, '/')) {
                         $target->path = static::removeDotSegments($relative->path);
                     } else {
-                        $target->path = static::mergePaths($relative, $base);
+                        $target->path = static::mergePaths($base, $relative);
                         $target->path = static::removeDotSegments($target->path);
                     }
 
@@ -255,7 +255,7 @@ class UriComponents
      * The algorithm herein is taken directly from
      * <https://datatracker.ietf.org/doc/html/rfc3986/#section-5.2.3>.
      */
-    protected static function mergePaths(UriStruct $relative, UriStruct $base) : string
+    protected static function mergePaths(UriStruct $base, UriStruct $relative) : string
     {
         // If the base URI has a defined authority component and an empty
         // path, then return a string consisting of "/" concatenated with the

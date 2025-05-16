@@ -48,11 +48,11 @@ abstract class UriUtility implements UriStructFactory, UriStructNormalizer, UriS
      * @inheritdoc
      */
     public function resolveUri(
+        UriStruct $base,
         UriStruct $relative,
-        UriStruct $base
     ) : UriStruct
     {
-        $components = UriComponents::newFromResolved($relative, $base);
+        $components = UriComponents::newFromResolved($base, $relative);
         return $this->newUri(...$components->asArray());
     }
 }
