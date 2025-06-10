@@ -13,7 +13,7 @@
     ],
     "require": {
         "php": ">=8.4",
-        "uri-interop/interface": "1.x@dev"
+        "uri-interop/interface": "^1.0"
     },
     "autoload": {
         "psr-4" : {
@@ -36,11 +36,5 @@
         "check": "composer test && composer analyze",
         "test": "./vendor/bin/phpunit",
         "test-coverage": "./vendor/bin/phpunit --coverage-html=./tmp/coverage"
-    },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../interface/"
-        }
-    ]
+    }
 }
